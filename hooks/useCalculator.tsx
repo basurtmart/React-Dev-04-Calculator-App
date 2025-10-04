@@ -4,7 +4,7 @@ enum Operation {
     add = '+',
     subtract = '-',
     multiply = '*',
-    divide = '%',
+    divide = '÷',
 }
 export const useCalculator = () => {
     const [formula, setFormula] = useState('0');
@@ -15,9 +15,18 @@ export const useCalculator = () => {
     const lastOperation = useRef<Operation>(null);
 
     useEffect(() => {
+        if (lastOperation.current) {
+            const firstFormulaPart = formula.split(' ').at(0)
+            setFormula(`${firstFormulaPart} ${lastOperation.current} ${number}`);
+        } else {
+            setFormula(number);
+        }
+    }, [number]);
+
+    useEffect(() => {
         // TODO: calculate subtotal
-        setFormula(number);
-    }), [number]
+        // setPrevNumber(number);
+    }, [number]);
 
     const clean = () => {
         setNumber('0');
@@ -38,18 +47,49 @@ export const useCalculator = () => {
     const deleteLast = () => {
         let negative = '';
         let tempNumber = number;
-        
+
         if (number.includes('-')) {
             negative = '-';
             tempNumber = number.substring(1);
         }
-        
+
         if (tempNumber.length > 1) {
             setNumber(negative + tempNumber.slice(0, -1));
         }
         else {
             setNumber('0');
         }
+    }
+
+    const setLastNumber = () => {
+        // TODO: Calculate subtotal
+
+        if (number.endsWith('.')) {
+            setPreviousNumber(number.slice(0, -1));
+        }
+
+        setPreviousNumber(number);
+        setNumber('0');
+    }
+
+    const divideOperation = () => {
+        setLastNumber();
+        lastOperation.current = Operation.divide;
+    }
+
+    const multiplyOperation = () => {
+        setLastNumber();
+        lastOperation.current = Operation.multiply;
+    }
+
+    const subtractOperation = () => {
+        setLastNumber();
+        lastOperation.current = Operation.subtract;
+    }
+
+    const addOperation = () => {
+        setLastNumber();
+        lastOperation.current = Operation.add;
     }
 
     const buildNumber = (numberString: string) => {
@@ -93,5 +133,10 @@ export const useCalculator = () => {
         clean,
         toggleSing,
         deleteLast,
+
+        divideOperation,
+        multiplyOperation,
+        subtractOperation,
+        addOperation,
     }
 }

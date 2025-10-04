@@ -15,6 +15,10 @@ const CalculatorApp = () => {
         clean,
         toggleSing,
         deleteLast,
+        divideOperation,
+        multiplyOperation,
+        subtractOperation,
+        addOperation,
     } = useCalculator();
 
     return (
@@ -24,9 +28,13 @@ const CalculatorApp = () => {
                 <ThemeText
                     variant='h1'
                 >{formula}</ThemeText>
-                <ThemeText
-                    variant='h2'
-                >250</ThemeText>
+                {
+                    formula === previousNumber ? (
+                        <ThemeText variant='h2'> </ThemeText>
+                    ) : (
+                        <ThemeText variant='h2'>{previousNumber}</ThemeText>
+                    )
+                }
             </View>
 
             <View style={globalStyles.row}>
@@ -48,7 +56,7 @@ const CalculatorApp = () => {
                 <CalculatorButton
                     label="÷"
                     color={Colors.orange}
-                    onPress={() => console.log('÷')} />
+                    onPress={divideOperation} />
             </View>
 
             <View style={globalStyles.row}>
@@ -64,7 +72,7 @@ const CalculatorApp = () => {
                 <CalculatorButton
                     label="X"
                     color={Colors.orange}
-                    onPress={() => console.log('X')} />
+                    onPress={multiplyOperation} />
             </View>
 
             <View style={globalStyles.row}>
@@ -80,7 +88,7 @@ const CalculatorApp = () => {
                 <CalculatorButton
                     label="-"
                     color={Colors.orange}
-                    onPress={() => console.log('-')} />
+                    onPress={subtractOperation} />
             </View>
 
             <View style={globalStyles.row}>
@@ -96,7 +104,7 @@ const CalculatorApp = () => {
                 <CalculatorButton
                     label="+"
                     color={Colors.orange}
-                    onPress={() => console.log('+')} />
+                    onPress={addOperation} />
             </View>
 
             <View style={globalStyles.row}>
